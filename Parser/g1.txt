@@ -1,0 +1,6 @@
+A,B,C,D
+a
+A
+A=BC
+B=DA
+D=a
