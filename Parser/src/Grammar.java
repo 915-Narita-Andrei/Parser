@@ -27,7 +27,7 @@ public class Grammar {
                 if (line.equals("0")) {
                     done = true;
                 } else if (line.equals("1")) {
-                    readData("g1.txt");
+                    readData("g2.in");
                 } else if (line.equals("2")) {
                     nonterminals.forEach(System.out::println);
                 } else if (line.equals("3")) {
@@ -87,7 +87,8 @@ public class Grammar {
         }
         while (reader.hasNextLine()){
             var line = reader.nextLine();
-            var l = line.split("=",1);
+            System.out.println(line);
+            var l = line.split("=",2);
             List<String> left = new ArrayList<>();
             left = List.of(l[0].split(","));
             List<String> right = new ArrayList<>();
