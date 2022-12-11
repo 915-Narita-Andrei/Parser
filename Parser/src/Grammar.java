@@ -55,13 +55,13 @@ public class Grammar {
     }
 
     private void printOptions() {
-        //System.out.println("0.Exit");
-       // System.out.println("1.Read grammar from file");
-       // System.out.println("2.Print set of nonterminals");
-       // System.out.println("3.Print set of terminals");
-      //  System.out.println("4.Print set of productions");
-       // System.out.println("5.Print set of productions for a given nonterminal");
-       // System.out.println("6.CFG check");
+        System.out.println("0.Exit");
+        System.out.println("1.Read grammar from file");
+        System.out.println("2.Print set of nonterminals");
+        System.out.println("3.Print set of terminals");
+        System.out.println("4.Print set of productions");
+        System.out.println("5.Print set of productions for a given nonterminal");
+        System.out.println("6.CFG check");
     }
 
     private void readData(String fileName){
@@ -87,13 +87,10 @@ public class Grammar {
         }
         while (reader.hasNextLine()){
             var line = reader.nextLine();
-            System.out.println(line);
             var l = line.split("=",2);
             List<String> left = new ArrayList<>();
             left = List.of(l[0].split(","));
             List<String> right = new ArrayList<>();
-            //for(int i=0; i<l[1].length(); i++)
-            //    right.add(String.valueOf(l[1].charAt(i)));
             right = List.of(l[1].split(","));
             Production production = new Production(left, right);
             productions.add(production);
