@@ -3,4 +3,4 @@ a
 A
 Aa=Bb,Cc
 Bb=Dd,Aa
-D=a
+Dd=a
