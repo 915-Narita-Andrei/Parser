@@ -1,6 +1,6 @@
-A,B,C,D
+Aa,Bb,Cc,Dd
 a
 A
-A=BC
-B=DA
+Aa=Bb,Cc
+Bb=Dd,Aa
 D=a

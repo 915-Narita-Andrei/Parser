@@ -1,0 +1,28 @@
+<program> ::= { <declist> <stmtlist> }
+
+<decllist> ::= <declaration> | <declaration> ; <decllist>
+<declaration> ::= <type> <identifier>
+<type1> ::= bool | char | int
+<arraydecl> ::= <type1> [ <integer_const> ]
+<type> ::= <type1> | <arraydecl>
+
+<stmtlist> ::= <stmt> ; | <stmt> ";" <stmtlist>
+<stmt> ::= <simplstmt> | <structstmt> | stop
+<simplstmt> ::= <assignstmt> | <iostmt>
+<assignstmt> ::= <identifier> = <expression>
+<operator1> ::= + | -
+<operator2> ::= * | / | // | %
+<expression> ::= <expression> <operator1> <term> | <term>
+<term> ::= <term> <operator2> <factor> | <factor>
+<factor> ::= ( <expression> ) | <identifier> | <integer_const>
+<iostmt> ::= read  ( <iostmtparam> ) | write ( <iostmtparam> )
+<iostmtparam> ::= <identifier> | <integer_const> | <character_const> | <string_const> 
+<structstmt> ::= <ifstmt> | <ifelsestmt> | <whilestmt> | <forstmt> 
+<ifstmt> ::= if ( <conditionlist> ) { <stmtlist> }
+<ifelsestmt> ::= if ( <conditionlist> ) { <stmtlist> } else <stmtlist>
+<whilestmt> ::= while ( <conditionlist> ) { <stmtlist> }
+<forstmt> ::= for ( <simplstmt>; <conditionlist>; <simplstmt> ) { <stmtlist> }
+<logicoperator> ::= && | ||
+<conditionlist> ::= <condition> <logicoperator> <condition>
+<condition> ::= <expression> <relation> <expression>
+<relation> ::= < | <= | == | != | >= | > 
