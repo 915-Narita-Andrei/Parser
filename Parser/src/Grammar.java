@@ -87,7 +87,7 @@ public class Grammar {
         }
         while (reader.hasNextLine()){
             var line = reader.nextLine();
-            var l = line.split("=");
+            var l = line.split("=",1);
             List<String> left = new ArrayList<>();
             left = List.of(l[0].split(","));
             List<String> right = new ArrayList<>();
