@@ -10,6 +10,22 @@ public class Grammar {
     private String start;
     private List<Production> productions;
 
+    public List<String> getTerminals() {
+        return terminals;
+    }
+
+    public List<String> getNonterminals() {
+        return nonterminals;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public List<Production> getProductions() {
+        return productions;
+    }
+
     public Grammar(){
         terminals = new ArrayList<>();
         nonterminals = new ArrayList<>();
@@ -111,6 +127,19 @@ public class Grammar {
                 System.out.println(production);
             }
         }
+    }
+
+    public List<Production> getProductionForNonterminal(String nonterminal){
+        List<Production> terminalProductions = new ArrayList<>();
+        for (Production production: productions) {
+            if (production.left.contains(nonterminal)) {
+                terminalProductions.add(production);
+            }
+            else if(production.right.contains(nonterminal)){
+                terminalProductions.add(production);
+            }
+        }
+        return terminalProductions;
     }
 
     private boolean checkCFG(){
