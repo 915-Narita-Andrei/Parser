@@ -31,6 +31,7 @@ public class Grammar {
         nonterminals = new ArrayList<>();
         start = "";
         productions = new ArrayList<>();
+        readData("g3.in");
     }
     public void run(){
         boolean done = false;
@@ -43,7 +44,7 @@ public class Grammar {
                 if (line.equals("0")) {
                     done = true;
                 } else if (line.equals("1")) {
-                    readData("g2.in");
+                    readData("g3.in");
                 } else if (line.equals("2")) {
                     nonterminals.forEach(System.out::println);
                 } else if (line.equals("3")) {
@@ -111,33 +112,21 @@ public class Grammar {
             Production production = new Production(left, right);
             productions.add(production);
         }
-    }//a,epsilon,,,a0,a1,00,11
-    //00,11
-    //l1 conc l2 = a 0 1
-    //eps conc x = x
-    //fol(start) = epsilon
-    //
-
-    private void printProductionForNonterminal(String nonterminal){
-        for (Production production: productions) {
-            if (production.left.contains(nonterminal)) {
-                System.out.println(production);
-            }
-            else if(production.right.contains(nonterminal)){
-                System.out.println(production);
-            }
-        }
     }
 
-    public List<Production> getProductionForNonterminal(String nonterminal){
+    private void printProductionForNonterminal(String nonterminal){
+        getProductionForNonterminal(nonterminal).forEach(System.out::println);
+    }
+
+    public List<Production> getProductionForNonterminal(String nonterminal){ //TODO: numa in partea stanga sa ne uitam
         List<Production> terminalProductions = new ArrayList<>();
         for (Production production: productions) {
             if (production.left.contains(nonterminal)) {
                 terminalProductions.add(production);
             }
-            else if(production.right.contains(nonterminal)){
-                terminalProductions.add(production);
-            }
+//            else if(production.right.contains(nonterminal)){
+//                terminalProductions.add(production);
+//            }
         }
         return terminalProductions;
     }
