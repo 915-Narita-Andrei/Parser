@@ -66,9 +66,23 @@ public class Parser {
                 columnCurrent.put(nonterminal, cell);
                 for(Production production : grammar.getProductionForNonterminal(nonterminal)){
                     var currentRight = production.right;
-                    var currentConcatenation = columnPast.get(currentRight.get(0));
+                    List<String> currentConcatenation;
+                    if(grammar.getTerminals().contains(currentRight.get(0))) {
+                        currentConcatenation = List.of(currentRight.get(0));
+                    } else if (currentRight.get(0).equals("epsilon")) {
+                        currentConcatenation = List.of("episilon");
+                    }
+                    else {
+                        currentConcatenation = columnPast.get(currentRight.get(0));
+                    }
                     for(int i=1; i<currentRight.size(); i++){
-                        currentConcatenation = concatenationOfSizeOne(currentConcatenation, columnPast.get(currentRight.get(i)));
+                        if(grammar.getTerminals().contains(currentRight.get(0))) {
+                            currentConcatenation = concatenationOfSizeOne(currentConcatenation, List.of(currentRight.get(i)));
+                        } else if (currentRight.get(0).equals("epsilon")) {
+                            currentConcatenation = concatenationOfSizeOne(currentConcatenation, List.of("epsilon"));
+                        } else {
+                            currentConcatenation = concatenationOfSizeOne(currentConcatenation, columnPast.get(currentRight.get(i)));
+                        }
                     }
                     cell  = columnCurrent.get(nonterminal); //TODO: daca avem mai multe productions pt un nonTerminal ar trebui sa facem reuniune de concatenarile lor?
                     cell.addAll(currentConcatenation);
