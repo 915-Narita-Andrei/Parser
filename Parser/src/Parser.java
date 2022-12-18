@@ -47,9 +47,9 @@ public class Parser {
             for (Production production : productions){
                 if(grammar.getTerminals().contains(production.right.get(0))){
                     //TODO: folosim doar cel mai din stanga Terminal sau oricare numa sa existe?
-                    cell.add(production.right.get(0));
+                        cell.add(production.right.get(0));
                 } else if (production.right.get(0).equals("epsilon")) {
-                    cell.add(production.right.get(0));
+                        cell.add(production.right.get(0));
                 }
                 columnCurrent.put(nonterminal, cell);
             }
@@ -86,7 +86,9 @@ public class Parser {
                     }
                     cell  = columnCurrent.get(nonterminal); //TODO: daca avem mai multe productions pt un nonTerminal ar trebui sa facem reuniune de concatenarile lor?
                     cell.addAll(currentConcatenation);
-                    columnCurrent.put(nonterminal, cell);
+                    var set =new HashSet<>(cell);
+                    var cell2 = new ArrayList<>(set);
+                    columnCurrent.put(nonterminal, cell2);
                 }
                 if(columnPast.get(nonterminal).size() != columnCurrent.get(nonterminal).size())
                     ok = true;
