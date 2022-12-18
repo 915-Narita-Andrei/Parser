@@ -1,8 +1,10 @@
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 public class Parser {
-
+    private static final String EPSILON = "epsilon";
     Grammar grammar = new Grammar();
 
     public Parser() {
@@ -10,12 +12,16 @@ public class Parser {
     }
 
     List<String> concatenationOfSizeOne(List<String>l1, List<String> l2){ //TODO:luam doar primu caracter?
-        if(l1 == null || l2 == null)
+        if(l1 == null && l2 == null)
             return List.of();
+        if(l1 == null)
+            l1 = List.of();
+        if(l2==null)
+            l2 = List.of();
         List<String> concatenation = new ArrayList<>();
         boolean epsilonInL1 = false;
         for (String terminal : l1){
-            if (!Objects.equals(terminal, "epsilon")){
+            if (!Objects.equals(terminal, EPSILON)){
                 var symbol = terminal.charAt(0);
                 if(!concatenation.contains(String.valueOf(symbol)))
                     concatenation.add(String.valueOf(symbol));
@@ -26,7 +32,7 @@ public class Parser {
         }
         if (epsilonInL1){
             for (String terminal : l2){
-                if (!Objects.equals(terminal, "epsilon")){
+                if (!Objects.equals(terminal, EPSILON)){
                     var symbol = terminal.charAt(0);
                     if(!concatenation.contains(String.valueOf(symbol))) {
                         concatenation.add(String.valueOf(symbol));
@@ -48,7 +54,7 @@ public class Parser {
                 if(grammar.getTerminals().contains(production.right.get(0))){
                     //TODO: folosim doar cel mai din stanga Terminal sau oricare numa sa existe?
                         cell.add(production.right.get(0));
-                } else if (production.right.get(0).equals("epsilon")) {
+                } else if (production.right.get(0).equals(EPSILON)) {
                         cell.add(production.right.get(0));
                 }
                 columnCurrent.put(nonterminal, cell);
@@ -59,42 +65,47 @@ public class Parser {
         boolean ok = true;
         while( ok ){
             ok  = false;
-            columnPast = columnCurrent;
+            columnPast = new HashMap<>(columnCurrent);
             columnCurrent = new HashMap<>();
             for(String nonterminal : grammar.getNonterminals()) {
-                var cell = columnPast.get(nonterminal);
-                columnCurrent.put(nonterminal, cell);
                 for(Production production : grammar.getProductionForNonterminal(nonterminal)){
                     var currentRight = production.right;
                     List<String> currentConcatenation;
                     if(grammar.getTerminals().contains(currentRight.get(0))) {
                         currentConcatenation = List.of(currentRight.get(0));
-                    } else if (currentRight.get(0).equals("epsilon")) {
-                        currentConcatenation = List.of("episilon");
+                    } else if (currentRight.get(0).equals(EPSILON)) {
+                        currentConcatenation = List.of(EPSILON);
                     }
                     else {
                         currentConcatenation = columnPast.get(currentRight.get(0));
                     }
                     for(int i=1; i<currentRight.size(); i++){
-                        if(grammar.getTerminals().contains(currentRight.get(0))) {
+                        if(grammar.getTerminals().contains(currentRight.get(i))) {
                             currentConcatenation = concatenationOfSizeOne(currentConcatenation, List.of(currentRight.get(i)));
-                        } else if (currentRight.get(0).equals("epsilon")) {
-                            currentConcatenation = concatenationOfSizeOne(currentConcatenation, List.of("epsilon"));
+                        } else if (currentRight.get(i).equals(EPSILON)) {
+                            currentConcatenation = concatenationOfSizeOne(currentConcatenation, List.of(EPSILON));
                         } else {
                             currentConcatenation = concatenationOfSizeOne(currentConcatenation, columnPast.get(currentRight.get(i)));
                         }
                     }
-                    cell  = columnCurrent.get(nonterminal); //TODO: daca avem mai multe productions pt un nonTerminal ar trebui sa facem reuniune de concatenarile lor?
+                    var cell = new ArrayList<>(columnPast.get(nonterminal)); //TODO: daca avem mai multe productions pt un nonTerminal ar trebui sa facem reuniune de concatenarile lor?
                     cell.addAll(currentConcatenation);
-                    var set =new HashSet<>(cell);
-                    var cell2 = new ArrayList<>(set);
-                    columnCurrent.put(nonterminal, cell2);
+                    columnCurrent.put(nonterminal, eliminateDuplicate(cell));
                 }
                 if(columnPast.get(nonterminal).size() != columnCurrent.get(nonterminal).size())
                     ok = true;
             }
         }
         System.out.println(columnCurrent);
+    }
+    
+    private List<String> eliminateDuplicate(List<String> l){
+        List<String> rez = new ArrayList<>();
+        for(String symbol : l){
+            if(!rez.contains(symbol))
+                rez.add(symbol);
+        }
+        return rez;
     }
 
     void Follow(){
