@@ -4,14 +4,14 @@ import java.util.stream.Collectors;
 
 
 public class Parser {
-    private static final String EPSILON = "epsilon";
+    public static final String EPSILON = "epsilon";
     Grammar grammar = new Grammar();
 
     public HashMap<String, List<String>> first = new HashMap<>();
     public HashMap<String, List<String>> follow = new HashMap<>();
 
-    public Parser() {
-
+    Parser(String file){
+        grammar = new Grammar(file);
     }
 
     List<String> concatenationOfSizeOne(List<String> l1, List<String> l2) { //TODO:luam doar primu caracter?

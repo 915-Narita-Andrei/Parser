@@ -33,6 +33,14 @@ public class Grammar {
         productions = new ArrayList<>();
         readData("g3.in");
     }
+
+    public Grammar(String file){
+        terminals = new ArrayList<>();
+        nonterminals = new ArrayList<>();
+        start = "";
+        productions = new ArrayList<>();
+        readData(file);
+    }
     public void run(){
         boolean done = false;
         BufferedReader reader = new BufferedReader(
