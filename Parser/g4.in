@@ -1,0 +1,12 @@
+S,A,B,C,D
+a,b,c,d
+S
+S=a,A,b
+S=B,A
+A=a,A
+A=c,A
+A=c
+B=D,C
+D=epsilon
+D=b
+C=c

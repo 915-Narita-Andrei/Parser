@@ -123,18 +123,25 @@ public class Grammar {
     }
 
     private void printProductionForNonterminal(String nonterminal){
-        getProductionForNonterminal(nonterminal).forEach(System.out::println);
+        getProductionForNonterminalInRHS(nonterminal).forEach(System.out::println);
+        getProductionForNonterminalInLHS(nonterminal).forEach(System.out::println);
     }
 
-    public List<Production> getProductionForNonterminal(String nonterminal){ //TODO: numa in partea stanga sa ne uitam
+    public List<Production> getProductionForNonterminalInLHS(String nonterminal){
         List<Production> terminalProductions = new ArrayList<>();
         for (Production production: productions) {
             if (production.left.contains(nonterminal)) {
                 terminalProductions.add(production);
             }
-//            else if(production.right.contains(nonterminal)){
-//                terminalProductions.add(production);
-//            }
+        }
+        return terminalProductions;
+    }
+    public List<Production> getProductionForNonterminalInRHS(String nonterminal){
+        List<Production> terminalProductions = new ArrayList<>();
+        for (Production production: productions) {
+            if (production.right.contains(nonterminal)) {
+                terminalProductions.add(production);
+            }
         }
         return terminalProductions;
     }

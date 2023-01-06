@@ -50,11 +50,10 @@ public class Parser {
         HashMap<String, List<String>> columnCurrent = new HashMap<>();
 
         for (String nonterminal : grammar.getNonterminals()) {
-            List<Production> productions = grammar.getProductionForNonterminal(nonterminal);
+            List<Production> productions = grammar.getProductionForNonterminalInLHS(nonterminal);
             List<String> cell = new ArrayList<>();
             for (Production production : productions) {
                 if (grammar.getTerminals().contains(production.right.get(0))) {
-                    //TODO: folosim doar cel mai din stanga Terminal sau oricare numa sa existe?
                     cell.add(production.right.get(0));
                 } else if (production.right.get(0).equals(EPSILON)) {
                     cell.add(production.right.get(0));
@@ -69,7 +68,7 @@ public class Parser {
             columnPast = new HashMap<>(columnCurrent);
             columnCurrent = new HashMap<>();
             for (String nonterminal : grammar.getNonterminals()) {
-                for (Production production : grammar.getProductionForNonterminal(nonterminal)) {
+                for (Production production : grammar.getProductionForNonterminalInLHS( nonterminal)) {
                     var currentRight = production.right;
                     List<String> currentConcatenation;
                     if (grammar.getTerminals().contains(currentRight.get(0))) {
@@ -97,6 +96,10 @@ public class Parser {
             }
         }
         first = columnCurrent;
+
+        for(String terminal: grammar.getTerminals()){
+            first.put(terminal, List.of(terminal));
+        }
     }
 
     private List<String> eliminateDuplicate(List<String> l) {
@@ -115,7 +118,6 @@ public class Parser {
             columnCurrent.put(nonterminal, List.of());
         }
         columnCurrent.put(grammar.getStart(), List.of(EPSILON));
-
         boolean changed = true;
         while (changed) {
             changed = false;
@@ -123,29 +125,27 @@ public class Parser {
             columnCurrent = new HashMap<>();
             for (String nonterminal : grammar.getNonterminals()) {
                 var cell = new ArrayList<String>();
-                for (Production production : grammar.getProductions()) {
-                    if (production.right.contains(nonterminal)) {
-                        var nonTerminalPosition = production.right.indexOf(nonterminal);
-                        if (nonTerminalPosition < production.right.size() - 1) {
-                            List<String> l;
-                            if (grammar.getTerminals().contains(production.right.get(nonTerminalPosition + 1))) {
-                                l = List.of(production.right.get(nonTerminalPosition + 1));
-                            } else {
-                                l = first.get(production.right.get(nonTerminalPosition + 1));
+                cell.addAll(columnPast.get(nonterminal));
+                var productions = grammar.getProductionForNonterminalInRHS(nonterminal);
+                for (Production production : productions) {
+                    var nonTerminalPosition = production.right.indexOf(nonterminal);
+                    if(nonTerminalPosition < production.right.size() - 1){
+                        for(String symbol: first.get(production.right.get(nonTerminalPosition + 1))){
+                            if(symbol.equals(EPSILON)){
+                                cell.addAll(columnPast.get(production.left.get(0)));
                             }
-                            for (String terminal : l) {
-                                if (terminal.equals(EPSILON)) {
-                                    cell.addAll(columnPast.get(production.left.get(0)));//It must be a CFG so on LHS of production there is only one nonTerminal
-                                }
-                                else {
-                                    cell.addAll(columnPast.get(nonterminal));
-                                    cell.addAll(l);
-                                }
+                            else {
+                                cell.addAll(first.get(production.right.get(nonTerminalPosition + 1)));
                             }
                         }
                     }
+                    else{
+                            cell.addAll(columnPast.get(production.left.get(0)));
+                    }
                 }
                 columnCurrent.put(nonterminal, eliminateDuplicate(cell));
+                if (columnPast.get(nonterminal).size() != columnCurrent.get(nonterminal).size())
+                    changed = true;
             }
         }
         follow = columnCurrent;
