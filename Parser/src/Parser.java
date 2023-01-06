@@ -5,7 +5,11 @@ import java.util.stream.Collectors;
 
 public class Parser {
     public static final String EPSILON = "epsilon";
-    Grammar grammar = new Grammar();
+    Grammar grammar;
+
+    public Grammar getGrammar() {
+        return grammar;
+    }
 
     public HashMap<String, List<String>> first = new HashMap<>();
     public HashMap<String, List<String>> follow = new HashMap<>();
@@ -100,6 +104,7 @@ public class Parser {
         for(String terminal: grammar.getTerminals()){
             first.put(terminal, List.of(terminal));
         }
+        first.put(Parser.EPSILON, List.of(Parser.EPSILON));
     }
 
     private List<String> eliminateDuplicate(List<String> l) {
