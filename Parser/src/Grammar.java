@@ -157,4 +157,8 @@ public class Grammar {
     public int getProductionIndex(Production production){
         return productions.indexOf(production);
     }
+
+    public Production getProduction(int i){
+        return productions.get(i);
+    }
 }
