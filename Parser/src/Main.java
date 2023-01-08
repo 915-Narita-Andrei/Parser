@@ -13,8 +13,11 @@ public class Main {
 //        System.out.println(parser.first);
 //        System.out.println(parser.follow);
 
-        parserOutput.parseSequence(List.of("a","*","(","a","+","a",")"));
-//        parserOutput.parseSequence(List.of("a","b","a","b"));
+        parserOutput.parseSequence(List.of("a","*","(","a","+","a",")"));  // G3: seminar fara tabelul de 10
+
+//        parserOutput.parseSequence(List.of("a","b","a","b")); // G5: cu tabelul de 10 de la seminar
+
+//        parserOutput.parseSequence(List.of("int", "a",";"));
 
         Tests tests = new Tests();
         tests.runTests();

@@ -52,7 +52,7 @@ public class ParserOutput {
                         var key = new Pair<>(nonTerminal, symbol);
                         var value = new Pair<>(production.right, grammar.getProductionIndex(production));
                         if(parsingTable.containsKey(key))
-                            throw new RuntimeException("CONFLICT");
+                            throw new RuntimeException("CONFLICT at key: " + key);
                         parsingTable.put(key, value);
                     }
                     else{
@@ -129,7 +129,6 @@ public class ParserOutput {
             }
             res.append("\n");
         }
-        System.out.println(res);
     }
 
 
@@ -179,10 +178,6 @@ public class ParserOutput {
 
         var go = true;
         while (go){
-//            System.out.println(alpha);
-//            System.out.println(beta);
-//            System.out.println(pi);
-//            System.out.println("------------");
             var tableCell = parsingTable.get(new Pair<>(beta.peek(), alpha.peek()));
             if(tableCell == null)
                 throw new RuntimeException("EROARE");
@@ -205,6 +200,9 @@ public class ParserOutput {
                         go = false;
                         System.out.println("Sequence accepted");
                         System.out.println(pi);
+                        System.out.println(table.get(SYMBOL));
+                        System.out.println(table.get(FATHER));
+                        System.out.println(table.get(SIBLING));
                     }
                     else {
                         go = false;
@@ -213,9 +211,6 @@ public class ParserOutput {
                 }
             }
         }
-//        System.out.println(table.get(SYMBOL));
-//        System.out.println(table.get(FATHER));
-//        System.out.println(table.get(SIBLING));
     }
 
 }

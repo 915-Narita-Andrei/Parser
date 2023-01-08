@@ -18,7 +18,7 @@ public class Parser {
         grammar = new Grammar(file);
     }
 
-    List<String> concatenationOfSizeOne(List<String> l1, List<String> l2) { //TODO:luam doar primu caracter?
+    List<String> concatenationOfSizeOne(List<String> l1, List<String> l2) {
         if (l1 == null && l2 == null)
             return List.of();
         if (l1 == null)
@@ -48,7 +48,7 @@ public class Parser {
         }
         return concatenation;
     }
-
+    int debug = 0;
     public void First() {
         HashMap<String, List<String>> columnPast = new HashMap<>();
         HashMap<String, List<String>> columnCurrent = new HashMap<>();
@@ -91,7 +91,7 @@ public class Parser {
                             currentConcatenation = concatenationOfSizeOne(currentConcatenation, columnPast.get(currentRight.get(i)));
                         }
                     }
-                    var cell = new ArrayList<>(columnPast.get(nonterminal)); //TODO: daca avem mai multe productions pt un nonTerminal ar trebui sa facem reuniune de concatenarile lor?
+                    var cell = new ArrayList<>(columnPast.get(nonterminal));
                     cell.addAll(currentConcatenation);
                     columnCurrent.put(nonterminal, eliminateDuplicate(cell));
                 }
