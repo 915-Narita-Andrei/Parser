@@ -153,4 +153,8 @@ public class Grammar {
         }
         return true;
     }
+
+    public int getProductionIndex(Production production){
+        return productions.indexOf(production);
+    }
 }
